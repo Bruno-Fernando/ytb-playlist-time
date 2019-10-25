@@ -2,5 +2,15 @@
     "name": "Youtube playlist time",
     "version": "1.0",
     "description": "Shows the total time of a youtube playlist.",
+    "permissions": ["declarativeContent"],
+    "background": {
+        "scripts": ["background.js"]       
+    },   
+    "page_action": {
+        "default_popup": "popup.html",
+        "default_icon": {
+            "32": "imagens/icon_32.png"
+        }
+    },
     "manifest_version": 2
   }
