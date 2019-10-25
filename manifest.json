@@ -1,0 +1,6 @@
+{
+    "name": "Youtube playlist time",
+    "version": "1.0",
+    "description": "Shows the total time of a youtube playlist.",
+    "manifest_version": 2
+  }
