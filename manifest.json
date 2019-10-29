@@ -5,7 +5,13 @@
     "permissions": ["declarativeContent"],
     "background": {
         "scripts": ["background.js"]       
-    },   
+    }, 
+    "content_scripts":[
+        {
+            "matches": ["https://www.youtube.com/playlist*"],
+            "js": ["content_script.js"]
+        }
+    ],   
     "page_action": {
         "default_popup": "popup.html",
         "default_icon": {
