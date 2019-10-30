@@ -38,17 +38,14 @@ function sumTime(timeList){
 
 function timeToString(hours, minutes, seconds){
     
-    if(hours > 0 || minutes > 59){
-        hours = hours + Math.floor(minutes/60);       
-    }
-    
-    minutes = minutes%60 + Math.floor(seconds/60);
-    seconds = seconds%60;  
+    let newSeconds = seconds%60;
+    let newMinutes = (minutes + Math.floor(seconds/60))%60
+    let newHours = hours + Math.floor(minutes/60) + Math.floor(seconds/3600);
 
-    if(hours < 0){
-        return toTwoDigits(minutes) + ':' + toTwoDigits(seconds);     
+    if(newHours == 0){
+        return toTwoDigits(newMinutes) + ':' + toTwoDigits(newSeconds);     
     }else{
-        return hours + ':' + toTwoDigits(minutes) + ':' + toTwoDigits(seconds);         
+        return newHours + ':' + toTwoDigits(newMinutes) + ':' + toTwoDigits(newSeconds);         
     }
 }
 
