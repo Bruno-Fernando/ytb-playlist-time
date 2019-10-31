@@ -1,57 +1,60 @@
 let time = document.getElementById('playlist-time');
 
 params = {
-    active : true,
+    active: true,
     currentWindow: true
 }
 
 chrome.tabs.query(params, gotTab);
 
-function gotTab(tab){
-   
-    chrome.tabs.sendMessage(tab[0].id, {}, function(response) {
+function gotTab(tab) {
+
+    chrome.tabs.sendMessage(tab[0].id, {}, function (response) {
         let finalTime = sumTime(response);
-        time.innerText = finalTime;
+        time.innerText = timeToString(formatTime(finalTime));
     });
 }
 
-function sumTime(timeList){
-    let hours = 0;
-    let minutes = 0;
-    let seconds = 0;
+function sumTime(timeList) {
+    let fullTime = {
+        hours: 0,
+        minutes: 0,
+        seconds: 0
+    }
 
     timeList.forEach(actualTime => {
         let aux = actualTime.split(':');
-        if(aux.length == 3){
-            hours += parseInt(aux[0]);
-            minutes += parseInt(aux[1]);
-            seconds += parseInt(aux[2]);
-        }else{
-            minutes += parseInt(aux[0]);
-            seconds += parseInt(aux[1]);
+        if (aux.length == 3) {
+            fullTime.hours += parseInt(aux[0]);
+            fullTime.minutes += parseInt(aux[1]);
+            fullTime.seconds += parseInt(aux[2]);
+        } else {
+            fullTime.minutes += parseInt(aux[0]);
+            fullTime.seconds += parseInt(aux[1]);
         }
 
     });
-    
-    return timeToString(hours, minutes, seconds);
+
+    return fullTime;
 }
 
-function timeToString(hours, minutes, seconds){
-    
-    if(hours > 0 || minutes > 59){
-        hours = hours + Math.floor(minutes/60);       
-    }
-    
-    minutes = minutes%60 + Math.floor(seconds/60);
-    seconds = seconds%60;  
+function formatTime(time) {
+    let newSeconds = time.seconds % 60;
+    let newMinutes = (time.minutes + Math.floor(time.seconds / 60)) % 60;
+    let newHours = time.hours + Math.floor(time.minutes / 60) + Math.floor(time.seconds / 3600);
 
-    if(hours < 0){
-        return toTwoDigits(minutes) + ':' + toTwoDigits(seconds);     
-    }else{
-        return hours + ':' + toTwoDigits(minutes) + ':' + toTwoDigits(seconds);         
+    return { newHours, newMinutes, newSeconds };
+}
+
+function timeToString(time) {
+
+    if (time.newHours == 0) {
+        return toTwoDigits(time.newMinutes) + ':' + toTwoDigits(time.newSeconds);
+    } else {
+        return time.newHours + ':' + toTwoDigits(time.newMinutes) + ':' + toTwoDigits(time.newSeconds);
     }
 }
 
-function toTwoDigits(n){
+function toTwoDigits(n) {
     return n > 9 ? n : '0' + n;
 }
