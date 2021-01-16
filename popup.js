@@ -1,4 +1,4 @@
-let time = document.getElementById('playlist-time');
+const time = document.getElementById('playlist-time');
 
 params = {
     active: true,
@@ -10,20 +10,20 @@ chrome.tabs.query(params, gotTab);
 function gotTab(tab) {
 
     chrome.tabs.sendMessage(tab[0].id, {}, function (response) {
-        let finalTime = sumTime(response);
+        const finalTime = sumTime(response);
         time.innerText = timeToString(formatTime(finalTime));
     });
 }
 
 function sumTime(timeList) {
-    let fullTime = {
+    const fullTime = {
         hours: 0,
         minutes: 0,
         seconds: 0
     }
 
     timeList.forEach(actualTime => {
-        let aux = actualTime.split(':');
+        const aux = actualTime.split(':');
         if (aux.length == 3) {
             fullTime.hours += parseInt(aux[0]);
             fullTime.minutes += parseInt(aux[1]);
@@ -39,9 +39,9 @@ function sumTime(timeList) {
 }
 
 function formatTime(time) {
-    let newSeconds = time.seconds % 60;
-    let newMinutes = (time.minutes + Math.floor(time.seconds / 60)) % 60;
-    let newHours = time.hours + Math.floor(time.minutes / 60) + Math.floor(time.seconds / 3600);
+    const newSeconds = time.seconds % 60;
+    const newMinutes = (time.minutes + Math.floor(time.seconds / 60)) % 60;
+    const newHours = time.hours + Math.floor(time.minutes / 60) + Math.floor(time.seconds / 3600);
 
     return { newHours, newMinutes, newSeconds };
 }
